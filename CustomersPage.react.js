@@ -17,6 +17,7 @@ function Customers() {
             { title: 'Email', field: 'email' },
             { title: 'Admin', field: 'admin' },
         ],
+        /*
         data: [{
             lastName: 'McCartney',
             firstName: 'Paul',
@@ -44,14 +45,32 @@ function Customers() {
             email: 'georgehar@gmail.com',
             admin: 'false',
         },
-        ],
+        ],*/
     });
     return (
         <SiteWrapper>
             <Page.Content>
                 <MaterialTable title="Customers"
-                    columns={state.columns}
-                    data={state.data}
+                    columns={[
+                        { title: 'First Name', field: 'fName' },
+                        { title: 'Last Name', field: 'lName' },
+                        { title: 'Email', field: 'email' },
+                        { title: 'Phone', field: 'phone' },
+                        { title: 'Address', field: 'address' },
+                        { title: 'Active', field: 'active' },
+                    ]}
+                    data={query =>
+                        new Promise((resolve, reject) => {
+                            let url = 'https://eagleeventplanningapi.azurewebsites.net/ep/customers'
+                            fetch(url)
+                                .then(response => response.json())
+                                .then(result => {
+                                    resolve({
+                                        data: result,
+                                    })
+                                })
+                        })
+                    }
                     editable={
                         {
                             onRowAdd: newData =>
